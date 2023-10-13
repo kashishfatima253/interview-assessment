@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import Country from '../models/Country.js';
 import State from '../models/State.js';
 import City from '../models/City.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router()
 // c. User List with Pagination, Sorting, and Filtering
@@ -12,10 +13,22 @@ const router = express.Router()
 // e. User Delete
 
 //getUsers
-router.get("/users", async(req,res)=>{
+router.post("/users", auth, async(req,res)=>{
     const users = await User.find()
     res.json(users)
+    
 })
+//     const page = parseInt(req.body.page);
+//   const pageSize = parseInt(req.body.pageSize);
+  
+//   const startIndex = (page - 1) * pageSize;
+//   const endIndex = page * pageSize;
+  
+//   const paginatedUsers = users.slice(startIndex, endIndex);
+  
+//   const totalPages = Math.ceil(users.length / pageSize);
+  
+//   res.json({ users: paginatedUsers, totalPages });
 
 // getCities
 router.post("/cities", async (req,res)=>{

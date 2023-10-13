@@ -16,7 +16,7 @@ import { UserRouter } from './routes/users.js';
 import { UserDetailRouter } from './routes/userDetails.js';
 
 const app = express();
-const port = 5000;
+const port = 3001;
 app.use(express.json());
 // app.use(express)
 app.use(cors())
@@ -27,17 +27,17 @@ app.get("/", (req, res) => {
     res.json({ message: "User Application." });
   })
 
-app.use("/auth", UserRouter)
+  // Configure and connect your backend application to the database.
+  app.use("/auth", UserRouter)
+  
+  app.use("/user", UserDetailRouter)
+  
+  let mongoURI = process.env['MONGO_URI']
+  await mongoose.connect(mongoURI, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
+  }).then(()=>console.log("mongodb connected"));
 
-app.use("/user", UserDetailRouter)
-
-
-// Configure and connect your backend application to the database.
-let mongoURI = process.env['MONGO_URI']
-mongoose.connect(mongoURI, { 
-  useNewUrlParser: true, 
-  useUnifiedTopology: true 
-}).then(()=>console.log("mongodb connected"));
 
 // Write a script to populate the Country, State, and City tables with sample data.
 // const usersData = [

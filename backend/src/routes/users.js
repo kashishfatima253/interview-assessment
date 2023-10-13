@@ -16,7 +16,9 @@ router.post("/register", async(req,res)=>{
     const user = await User.findOne({username})
 
     if(user){
-        res.json({message:"User already exists"})
+        return res.json({message:"User already exists"});
+
+        // return false
     }
     else{
         // res.json({message:"User does not exist"})
@@ -33,7 +35,8 @@ router.post("/register", async(req,res)=>{
 
         await newUser.save()
 
-        res.json({message:"Registration successfully"});
+        return res.json({message:"Registration successfully"});
+        // return true
     }
 
     
@@ -44,20 +47,30 @@ router.post("/login", async(req,res)=>{
 
     const user = await User.findOne({username})
 
-    if(!user){
-        res.json({message:"User does not exist"})
+    try{
+        if(!user){
+        return res.status(400).json({message:"User does not exist"})
     }
     else{
         const isPasswordValid = await bcrypt.compare(password,user.password)
         if(isPasswordValid){
 
             // res.json({message:"sign in successful"})
-            const token = jwt.sign({id:user._id}, "secret")
+            const token = jwt.sign({id:user._id}, process.env.JWT_SECRET,
+                { expiresIn: '30 days' },
+                (err, token) => {
+                  if (err) throw err;
+                  res.json({ token });
+                })
             res.json({token, userID: user._id})
         }
         else{
-            res.json({message:"invalid credentials"})
+            res.status(400).json({message:"Invalid password"})
         }
+    }
+    }
+    catch(error){
+        res.status(500).send('Service unavailable')
     }
 })
 
