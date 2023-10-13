@@ -1,4 +1,12 @@
+body{
+  margin: 0;
+  padding: 0;
+}
+
 .App {
+  background-image: 'url("/images/sunset.jpg")';
+  background-size: 'cover';
+  background-color: 'red';
   text-align: center;
 }
 
@@ -15,7 +23,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
