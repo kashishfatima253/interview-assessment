@@ -11,7 +11,7 @@ const router = express.Router()
 
 
 router.post("/register", async(req,res)=>{
-    const {username, password, email, country, state,city} = req.body
+    const {username, email, country, state,city} = req.body
 
     const user = await User.findOne({username})
 
@@ -22,11 +22,11 @@ router.post("/register", async(req,res)=>{
     }
     else{
         // res.json({message:"User does not exist"})
-        const encryptedPassword = await bcrypt.hash(password, 10);
+        // const encryptedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
             username:username, 
-            password:encryptedPassword,
+            // password:encryptedPassword,
             email:email,
             country:country,
             state:state,
@@ -35,7 +35,7 @@ router.post("/register", async(req,res)=>{
 
         await newUser.save()
 
-        return res.json({message:"Registration successfully"});
+        return res.json({message:"Registration successful"});
         // return true
     }
 
@@ -43,34 +43,35 @@ router.post("/register", async(req,res)=>{
 })
 
 router.post("/login", async(req,res)=>{
-    const {username,password} = req.body;
+    const {username,email} = req.body;
 
     const user = await User.findOne({username})
 
     try{
         if(!user){
-        return res.status(400).json({message:"User does not exist"})
+            res.status(400).json({message:"User does not exist"})
     }
     else{
-        const isPasswordValid = await bcrypt.compare(password,user.password)
-        if(isPasswordValid){
+        // console.log(user.email)
+        // console.log(email)        
+        if(email == user.email){
 
-            // res.json({message:"sign in successful"})
-            const token = jwt.sign({id:user._id}, process.env.JWT_SECRET,
-                { expiresIn: '30 days' },
-                (err, token) => {
-                  if (err) throw err;
-                  res.json({ token });
-                })
-            res.json({token, userID: user._id})
+            res.json({user, message:"sign in successful"})
+            // const token = jwt.sign({id:user._id}, process.env.JWT_SECRET,
+            //     { expiresIn: '30 days' },
+            //     (err, token) => {
+            //       if (err) throw err;
+            //       res.json({ token });
+            //     })
+            // res.json({token, userID: user._id})
         }
         else{
-            res.status(400).json({message:"Invalid password"})
+            res.status(400).json({message:"Invalid credentials"})
         }
     }
     }
     catch(error){
-        res.status(500).send('Service unavailable')
+        res.status(500).send('Internal Server Error')
     }
 })
 

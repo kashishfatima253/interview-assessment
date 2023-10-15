@@ -5,7 +5,6 @@ import User from '../models/User.js';
 import Country from '../models/Country.js';
 import State from '../models/State.js';
 import City from '../models/City.js';
-import auth from '../middleware/auth.js';
 
 const router = express.Router()
 // c. User List with Pagination, Sorting, and Filtering
@@ -13,22 +12,39 @@ const router = express.Router()
 // e. User Delete
 
 //getUsers
-router.post("/users", auth, async(req,res)=>{
-    const users = await User.find()
-    res.json(users)
+router.post("/users",  async(req,res)=>{
+
+    if (!req.body) {
+        const users = await User.find().exec();
+        res.json(users);
+      } else {
+        const { page, limit, sort, filter } = req.body;
+            let query = User.find()
+            if(page && limit){
+
+                if(page!=0){
+    
+                    const skip = (page - 1) * limit;
+                    query.skip(skip).limit(parseInt(limit));
+                }
+                
+            }
+            if (filter) {
+                query = query.find(filter);
+            }
+            
+            if (sort) {
+                query = query.sort(sort);
+            }
+            
+            const users = await query.exec();
+            res.json(users);
+            
+       
+      }
+      
     
 })
-//     const page = parseInt(req.body.page);
-//   const pageSize = parseInt(req.body.pageSize);
-  
-//   const startIndex = (page - 1) * pageSize;
-//   const endIndex = page * pageSize;
-  
-//   const paginatedUsers = users.slice(startIndex, endIndex);
-  
-//   const totalPages = Math.ceil(users.length / pageSize);
-  
-//   res.json({ users: paginatedUsers, totalPages });
 
 // getCities
 router.post("/cities", async (req,res)=>{
@@ -53,11 +69,62 @@ router.post("/states", async(req,res)=>{
 
 
 //userUpdate
-router.put("/updateuser", async(req,res)=>{
-    const {username,email} = req.body
-    await User.findOneAndUpdate({username}, {$set:{email:email}}).then(()=>{
-        res.json({message:"Record updated"})
-    })
+router.post("/updateuser", async(req,res)=>{
+    const { user, username, email, country, state, city } = req.body;
+
+    if(username && email){
+
+        await User.findOneAndUpdate({username:user}, {
+          $set: {
+            username:username,
+            email:email,
+            country,
+            state,
+            city
+          }
+        }).then(() => {
+          res.json({ message: "Record updated" });
+        });
+    }
+    // if(email){
+    //     await User.findOneAndUpdate({username:user}, {
+    //         $set: {
+    //           email:email,
+    //         }
+    //       }).then(() => {
+    //         res.json({ message: "Record updated" });
+    //       });
+    // }
+    // if(country){
+    //     await User.findOneAndUpdate({username:user}, {
+    //         $set: {
+    //           country:country,
+    //         }
+    //       }).then(() => {
+    //         res.json({ message: "Record updated" });
+    //       });
+    // }
+    // if(state){
+    //     await User.findOneAndUpdate({username:user}, {
+    //         $set: {
+    //           state:state,
+    //         }
+    //       }).then(() => {
+    //         res.json({ message: "Record updated" });
+    //       });
+    // }
+    // if(city){
+    //     await User.findOneAndUpdate({username:user}, {
+    //         $set: {
+    //           city:city,
+    //         }
+    //       }).then(() => {
+    //         res.json({ message: "Record updated" });
+    //       });
+    // }
+    
+    
+    
     
 })
 

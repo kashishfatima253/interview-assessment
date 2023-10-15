@@ -27,7 +27,6 @@ app.get("/", (req, res) => {
     res.json({ message: "User Application." });
   })
 
-  // Configure and connect your backend application to the database.
   app.use("/auth", UserRouter)
   
   app.use("/user", UserDetailRouter)
@@ -41,13 +40,13 @@ app.get("/", (req, res) => {
 
 // Write a script to populate the Country, State, and City tables with sample data.
 // const usersData = [
-//     { username: 'Kashish', password:"abc", email: 'kashishfatima@gmail.com', country: "Pakistan", state: "Sindh", city: "Karachi" },
-//     { username: 'Talha',password:"abc", email: 'talha@gmail.com', country: "Pakistan", state: "Sindh", city: "Karachi" },
-//     { username: 'Sundus',password:"abc", email: 'sundus@gmail.com', country: "Pakistan", state: "Sindh", city: "Hyderabad" },
-//     { username: 'Ali',password:"abc", email: 'ali@gmail.com', country: "Pakistan", state: "Sindh", city: "Mirpurkhaas" },
-//     { username: 'Efshal',password:"abc", email: 'efshal@gmail.com', country: "Pakistan", state: "Punjab", city: "Lahore" },
-//     { username: 'Usama',password:"abc", email: 'usama@gmail.com', country: "Germany", state: "Bavaria", city: "Munich" },
-//     { username: 'Hassan',password:"abc", email: 'hassan@gmail.com', country: "US", state: "California", city: "San Francisco" },
+//     { username: 'Kashish',email: 'kashishfatima@gmail.com', country: "Pakistan", state: "Sindh", city: "Karachi" },
+//     { username: 'Talha', email: 'talha@gmail.com', country: "Pakistan", state: "Sindh", city: "Karachi" },
+//     { username: 'Sundus', email: 'sundus@gmail.com', country: "Pakistan", state: "Sindh", city: "Hyderabad" },
+//     { username: 'Ali', email: 'ali@gmail.com', country: "Pakistan", state: "Sindh", city: "Mirpurkhaas" },
+//     { username: 'Efshal', email: 'efshal@gmail.com', country: "Pakistan", state: "Punjab", city: "Lahore" },
+//     { username: 'Usama', email: 'usama@gmail.com', country: "Germany", state: "Bavaria", city: "Munich" },
+//     { username: 'Hassan', email: 'hassan@gmail.com', country: "US", state: "California", city: "San Francisco" },
 //   ];
 
 //     await User.insertMany(usersData)
@@ -89,10 +88,3 @@ app.get("/", (req, res) => {
 // .then(()=>console.log("state data inserted"))
 // .catch(err=>console.log("state data not inserted ", err))
 
-
-
-
-// app.listen(3000, ()=>console.log("Server started successfully!"));
-// const listener = app.listen(process.env.PORT || 3000, function () {
-//     console.log("Your app is listening on port " + listener.address().port);
-//   });
