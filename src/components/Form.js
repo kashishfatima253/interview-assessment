@@ -1,17 +1,11 @@
 import React, { useState,useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import Axios  from 'axios';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Button, Card, CardActions, CardContent, Grid, TextField, Typography, Box, MenuItem, FormControl } from '@mui/material';
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import axios  from 'axios';
 
 
-const Register = () => {
-  const [isError, setIsError] = useState(false)
+const Form = () => {
+    const [isError, setIsError] = useState(false)
   const [valid, setValid] = useState(true);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -29,7 +23,7 @@ const Register = () => {
       return re.test(String(email).toLowerCase());
     };
     useEffect(()=>{
-        Axios.get("http://localhost:3001/user/countries").then((res)=>setCountries(res.data))
+        axios.get("http://localhost:3001/user/countries").then((res)=>setCountries(res.data))
         
     },[countries])
 
@@ -59,6 +53,7 @@ const Register = () => {
       
 }
 
+
   //input handle events
   const handleUsername = (event)=>{
     // console.log(event.target.value)
@@ -81,7 +76,7 @@ const Register = () => {
       console.log("state val ", country);
   
     });
-    Axios.post("http://localhost:3001/user/states", { country: newCountry }).then((res) => {
+    axios.post("http://localhost:3001/user/states", { country: newCountry }).then((res) => {
       console.log("api data ", res.data);
       setStates(res.data)
     });
@@ -96,42 +91,14 @@ const Register = () => {
       console.log("state val ", state);
 
     });
-    Axios.post("http://localhost:3001/user/cities", { state: newState }).then((res) => {
+    axios.post("http://localhost:3001/user/cities", { state: newState }).then((res) => {
       console.log("api data ", res.data);
       setCities(res.data)
     });
 
     };
-  
   return (
-    <Box
-    sx={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundImage: 'url("/images/sunset.jpg")',
-      backgroundSize: 'cover',
-      backgroundColor: '#f0f0f0',
-      minHeight: '100vh',
-    }}
-  >
-    
-    {/* <Grid container justifyContent="center" alignItems="center"> */}
-      {/* <Grid item xs={12} sm={8} md={6} lg={4}> */}
-      {/* <Card sx={{ p: 1, backgroundColor: '#f0f0f0', borderRadius: 4 }}>  */}
-          
-    <Card elevation={10} sx={{width:'50%', p:5, m:5}}>
-      <AssignmentIcon sx={{ fontSize: 40, color: '#7E57C2' }} />
-      {/* </Card> */}
-      <Typography variant="h4" sx={{ m: 2 }}>
-      Interview Assessment
-      </Typography>
-      <Typography sx={{ m: 2 }}>
-      Please enter details to create an account
-    </Typography>
-    {/* <FormControl> */}
-          <CardContent>
-            <Grid container spacing={2}>
+    <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
                   sx={{ width: '100%' }}
@@ -248,74 +215,7 @@ const Register = () => {
                 </TextField>
               </Grid>
             </Grid>
-
-           
-          
-          </CardContent>
-
-          {/* <CardActions> */}
-            <Grid container direction="column" spacing={2}>
-              <Grid item>
-                <Button
-                type='submit'
-                onClick={onSubmitRegister}
-                  sx={{
-                    mt:2,
-                    width: '50%',
-                    backgroundColor: '#7E57C2',
-                    fontWeight: '500',
-                    color: '#fff',
-                    backgroundImage: 'linear-gradient(to bottom, #7E57C2, #5A3EAE)',  
-                    boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  
-                    '&:hover': {
-                      backgroundImage: 'linear-gradient(to bottom, #5A3EAE, #3E2871)',  
-                      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.16)',  
-                    },
-                    '&:active': {
-                      backgroundImage: 'linear-gradient(to bottom, #3E2871, #241A4E)',  
-                      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.12)',  
-                    },
-                  }}
-                >
-                  SignUp
-                </Button>
-
-                {
-                    isError ? 
-                    
-                    <Typography sx={{mt:2, fontWeight:500, color:"red"}}>
-                      {!username || !email || !country || !state || !city ? "Fill the form to continue" : ""}
-                  </Typography> : 
-                  ""
-                  }
-              </Grid>
-              <Grid item>
-                <Typography sx={{ m: 2 }}>
-                  Already have an account?
-                  {/* <Button
-                    sx={{
-                      fontWeight: '500',
-                      color: '#7E57C2',
-                      '&:hover': {
-                      //   backgroundColor: '#fff',
-                        color: 'linear-gradient(to bottom, #5A3EAE, #3E2871)',
-                      //   boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.12)',
-                      },
-                    }}
-                  >
-                    Login
-                  </Button> */}
-                   <Link to='/'>Login</Link>
-                </Typography>
-              </Grid>
-            </Grid>
-          {/* </CardActions> */}
-          {/* </FormControl> */}
-        </Card>
-       {/* </Grid> */}
-    {/* //  </Grid> */}
-  </Box>
   )
 }
 
-export default Register
+export default Form

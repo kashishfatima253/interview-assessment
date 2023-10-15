@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useUser } from '../UserContext.js';
 import { Link, useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Button, Card, CardActions, CardContent, Grid, TextField, Typography, Box } from '@mui/material';
+import { Button, Card, CardContent, Grid, TextField, Typography, Box } from '@mui/material';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -11,29 +12,55 @@ import axios from 'axios';
 
 const Login = () => {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [isError, setIsError] = useState(false)
+  const [valid, setValid] = useState(true);
 
-  // const [_,setCookies] = useCookies("access_token")
+  const { setUser } = useUser();
+  
   const navigate = useNavigate();
 
-  // const navigateToUsers = () => {
-  //   // 👇️ navigate to /contacts
-  //   navigate('/users');
-  // };
+  const validateEmail = (email) => {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const checkEmailIsValid = (event) =>{
+    const input = event.target.value;
+    setEmail(input);    
+  }
 
   const onSubmitLogin = async(event)=>{
     event.preventDefault();
+    setValid(validateEmail(email));
+    if(!username){
+      setIsError(true)
+    }
+    else if(!email){
+      setIsError(true)
+    }
+    else if(username && email && valid){
 
-    try {
-      const response = await axios.post("http://localhost:3001/auth/login",{
-        username, password
-      });
+      try {
+  
+        await axios.post("http://localhost:3001/auth/login",{
+          username, email
+        }).then((res)=>{
+          console.log(res)
+          const userid = res.data.user._id
+          // alert(res.data.message)
+          localStorage.setItem("userId",userid)
+          setUser(res.data.user.username)
+          navigate("/users")
 
-      // setCookies("access_token", response.data.token);
-      console.log(response.data.token)
+        }).catch(err=>{
+          alert(err.response.data.message)
 
-    } catch (error) {
-      console.log(error);
+        })
+  
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   return (
@@ -48,13 +75,10 @@ const Login = () => {
         minHeight: '100vh',
       }}
     >
-        {/* <FormControl></FormControl> */}
       <Grid container justifyContent="center" alignItems="center">
         <Grid item xs={12} sm={8} md={6} lg={4}>
           <Card elevation={10} sx={{ p: 5 }}>
-            {/* <Card sx={{ p: 1, backgroundColor: '#f0f0f0', borderRadius: 4 }}> */}
               <AssignmentIcon sx={{ fontSize: 40, color: '#7E57C2' }} />
-            {/* </Card> */}
             <Typography variant="h4" sx={{ m: 2 }}>
               Interview Assessment
             </Typography>
@@ -79,15 +103,15 @@ const Login = () => {
                   <TextField
                     sx={{ width: '100%' }}
                     color="secondary"
-                    id="outlined-password-input"
-                    label="Password"
-                    type="password"
-                    autoComplete="current-password"
+                    id="outlined-basic"
+                    label="Email"
                     variant="outlined"
-                    value={password}
-                    onChange={(event)=>setPassword(event.target.value)}
+                    value={email}
+                    onChange={checkEmailIsValid}
                   />
                 </Grid>
+
+                {!valid && <p style={{ color: 'red' }}>Please enter a valid email address</p>}
               </Grid>
             </CardContent>
 
@@ -114,28 +138,23 @@ const Login = () => {
                   >
                     Login
                   </Button>
+                  {
+                    isError ? 
+                    
+                    <Typography sx={{mt:2, fontWeight:500, color:"red"}}>
+                      {!username || !email? "Fill the form to continue" : ""}
+                  </Typography> : 
+                  ""
+                  }
                 </Grid>
                 <Grid item>
-                  <Typography sx={{ m: 2 }}>
+                  <Typography>
                     Don't have an account?
-                    {/* <Button
-                      sx={{
-                        fontWeight: '500',
-                        color: '#7E57C2',
-                        '&:hover': {
-                        //   backgroundColor: '#fff',
-                          color: 'linear-gradient(to bottom, #5A3EAE, #3E2871)',
-                        //   boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.12)',
-                        },
-                      }}
-                    >
-                      Create Account
-                    </Button> */}
+                    
                     <Link to='/register'>Create Account</Link>
                   </Typography>
                 </Grid>
               </Grid>
-            {/* </CardActions> */}
           </Card>
         </Grid>
       </Grid>
