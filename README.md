@@ -3,10 +3,10 @@
 ## Description
 This project is a User Management System with the following functionalities:
 
-Login: Users can log in using their username and valid email.
-Registration: New users can create an account by providing details such as username, email, country, state, and city.
-User List Display: Display a paginated, sortable, and filterable list of users.
-Update and Delete Users: Users with appropriate permissions can update or delete user information.
+* Login: Users can log in using their username and valid email.
+* Registration: New users can create an account by providing details such as username, email, country, state, and city.
+* User List Display: Display a paginated, sortable, and filterable list of users.
+* Update and Delete Users: Users with appropriate permissions can update or delete user information.
 
 ## Features
 * Login: Enter username and email to log in.
