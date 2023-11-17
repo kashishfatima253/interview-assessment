@@ -19,15 +19,18 @@ Update and Delete Users: Users with appropriate permissions can update or delete
 Frontend: ReactJS, Material UI
 Backend: MongoDB, Express, NodeJS
 
+
 ## Login Page
 ![image](https://github.com/kashishfatima253/interview-assessment/assets/128344656/a47345f0-e6d8-4aab-b3e3-2fecdda870e2)
 
+
 ## Register/SignUp Page
-![image](https://github.com/kashishfatima253/interview-assessment/assets/128344656/bdf1d52d-41b5-4835-9a73-ad138cabae92)
+![image](https://github.com/kashishfatima253/interview-assessment/assets/128344656/74cbe05d-680f-4392-8c3c-2b71648ec827)
 
 
 ## Users Page
-![image](https://github.com/kashishfatima253/interview-assessment/assets/128344656/74cbe05d-680f-4392-8c3c-2b71648ec827)
+![image](https://github.com/kashishfatima253/interview-assessment/assets/128344656/bdf1d52d-41b5-4835-9a73-ad138cabae92)
+
 
 ---
 
